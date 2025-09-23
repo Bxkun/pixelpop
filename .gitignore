@@ -1,0 +1,204 @@
+# 📝 Pixelpop .gitignore
+# Comprehensive ignore rules for Node.js/TypeScript project
+
+# === Build Outputs ===
+dist/
+build/
+lib/
+out/
+
+# === Dependencies ===
+node_modules/
+.pnp
+.pnp.js
+.yarn/install-state.gz
+
+# === Package Manager Files ===
+# NPM
+npm-debug.log*
+npm-error.log*
+.npmrc
+
+# Yarn
+yarn-debug.log*
+yarn-error.log*
+.yarn-integrity
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+
+# PNPM
+pnpm-debug.log*
+pnpm-error.log*
+.pnpm-debug.log
+
+# === Environment Variables ===
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# === IDE and Editor Files ===
+# VSCode
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# JetBrains IDEs
+.idea/
+*.swp
+*.swo
+*~
+
+# Sublime Text
+*.sublime-workspace
+*.sublime-project
+
+# Vim
+[._]*.s[a-v][a-z]
+[._]*.sw[a-p]
+[._]s[a-rt-v][a-z]
+[._]ss[a-gi-z]
+[._]sw[a-p]
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
+# === Operating System Files ===
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Windows
+Thumbs.db
+ehthumbs.db
+ehthumbs_vista.db
+Desktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msm
+*.msp
+*.lnk
+
+# Linux
+*~
+
+# === Temporary Files ===
+# Node.js
+*.tgz
+*.tar.gz
+*.pid
+*.seed
+*.pid.lock
+
+# TypeScript
+*.tsbuildinfo
+
+# Testing
+coverage/
+.nyc_output
+.coverage
+*.lcov
+
+# === Runtime and Cache ===
+.cache/
+.parcel-cache/
+.next/
+.nuxt/
+.vuepress/dist
+.serverless/
+.fusebox/
+.dynamodb/
+
+# === Log Files ===
+logs/
+*.log
+lerna-debug.log*
+.pnpm-debug.log*
+
+# === Temporary Processing Files ===
+# FFmpeg temporary files (used by pixelpop for GIF processing)
+tmp/
+temp/
+gif-frames-*/
+
+# === Example Output ===
+# Don't commit example output images
+examples/output/
+examples/*.jpg
+examples/*.png
+examples/*.gif
+examples/*.webp
+
+# === Documentation Build ===
+docs/build/
+docs/.docusaurus/
+
+# === Optional NPM Cache ===
+.npm
+
+# === ESLint Cache ===
+.eslintcache
+
+# === Prettier Cache ===
+.prettiercache
+
+# === TypeScript Cache ===
+.tscache
+
+# === Microbundle Cache ===
+.rpt2_cache/
+.rts2_cache_cjs/
+.rts2_cache_es/
+.rts2_cache_umd/
+
+# === Optional REPL History ===
+.node_repl_history
+
+# === Diagnostic Reports ===
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# === Storybook Build Outputs ===
+storybook-static/
+
+# === Local Development ===
+# Local configuration overrides
+local.json
+.local
+
+# === Package Archives ===
+*.tgz
+*.tar.xz
+
+# === Backup Files ===
+*.backup
+*.bak
+*.orig
+
+# === Lock Files (include package-lock.json but ignore others) ===
+# Keep package-lock.json for reproducible builds
+# yarn.lock (if using yarn)
+# pnpm-lock.yaml (if using pnpm)
+
+# === Keep Important Files ===
+!.gitkeep
+!/docs/**/.gitkeep
+
+# === Other ===
+DEV/*
