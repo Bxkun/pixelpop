@@ -201,4 +201,4 @@ local.json
 !/docs/**/.gitkeep
 
 # === Other ===
-DEV/*
+DEV/
