@@ -1,4 +1,4 @@
-import eslint from "@eslint/js";
+import js from "@eslint/js";
 import globals from "globals";
 import tseslint from "typescript-eslint";
 
@@ -6,7 +6,7 @@ export default [
   {
     ignores: ["dist", "node_modules"],
   },
-  eslint.configs.recommended,
+  js.configs.recommended,
   {
     files: ["**/*.ts", "**/*.tsx"],
     plugins: {
@@ -24,10 +24,11 @@ export default [
       },
     },
     rules: {
+      "no-unused-vars": "off", // Disable base rule
       "@typescript-eslint/no-floating-promises": "error",
       "@typescript-eslint/no-unused-vars": [
         "error",
-        { argsIgnorePattern: "^_" },
+        { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
       ],
       "@typescript-eslint/explicit-module-boundary-types": "off",
     },

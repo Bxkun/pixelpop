@@ -24,7 +24,7 @@ interface Frame {
 
 export async function renderGif(
   buffer: Readonly<Uint8Array>,
-  onFrame: (frameData: Uint8Array) => Promise<void>,
+  onFrame: (_frameData: Uint8Array) => Promise<void>,
   options: GifRenderOptions = {},
 ): Promise<GifAnimation> {
   // Configure fluent-ffmpeg to use the bundled binary
@@ -119,11 +119,13 @@ export async function renderGif(
             const files = await readdir(tempDir);
             await Promise.all(files.map((file) => unlink(join(tempDir, file))));
             await rmdir(tempDir);
-          } catch {}
+          } catch {
+            // Ignore cleanup errors
+          }
         };
 
         // Start the animation
-        playAnimation();
+        void playAnimation();
         resolve(animation);
       })
       .on("error", reject)

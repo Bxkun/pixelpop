@@ -34,7 +34,7 @@ interface InternalRenderOptions extends RenderOptions {
   readonly isGifFrame?: boolean;
 }
 
-export type RenderFrame = ((text: string) => void) & {
+export type RenderFrame = ((_text: string) => void) & {
   done?: () => void;
 };
 
@@ -45,15 +45,15 @@ export interface GifOptions extends RenderOptions {
 
 interface TerminalImage {
   buffer(
-    buffer: Readonly<Uint8Array>,
-    options?: RenderOptions,
+    _buffer: Readonly<Uint8Array>,
+    _options?: RenderOptions,
   ): Promise<string>;
-  file(filePath: string, options?: RenderOptions): Promise<string>;
+  file(_filePath: string, _options?: RenderOptions): Promise<string>;
   gifBuffer(
-    buffer: Readonly<Uint8Array>,
-    options?: GifOptions,
+    _buffer: Readonly<Uint8Array>,
+    _options?: GifOptions,
   ): Promise<() => void>;
-  gifFile(filePath: string, options?: GifOptions): Promise<() => void>;
+  gifFile(_filePath: string, _options?: GifOptions): Promise<() => void>;
 }
 
 // Custom smooth frame renderer using cursor control
