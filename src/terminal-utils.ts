@@ -115,8 +115,6 @@ export function renderAnsiOptimized(
   bottomA: number,
   terminalInfo: TerminalInfo,
 ): string {
-  const pixel = getPixelCharacter(terminalInfo);
-
   // Handle transparency based on terminal capabilities
   if (topA === 0 && bottomA === 0) {
     return terminalInfo.useSpaceForTransparency ? " " : chalk.reset(" ");
@@ -124,24 +122,16 @@ export function renderAnsiOptimized(
 
   if (topA === 0) {
     // Only render bottom pixel
-    if (terminalInfo.supportsTransparency) {
-      return chalk.rgb(bottomR, bottomG, bottomB)("▀");
-    } else {
-      return " "; // Use space for terminals that don't handle transparency well
-    }
+    return chalk.rgb(bottomR, bottomG, bottomB)("▄");
   }
 
   if (bottomA === 0) {
     // Only render top pixel
-    if (terminalInfo.supportsTransparency) {
-      return chalk.rgb(topR, topG, topB)("▄");
-    } else {
-      return chalk.rgb(topR, topG, topB)(pixel);
-    }
+    return chalk.rgb(topR, topG, topB)("▀");
   }
 
   // Both pixels are opaque
-  return chalk.bgRgb(topR, topG, topB).rgb(bottomR, bottomG, bottomB)(pixel);
+  return chalk.bgRgb(topR, topG, topB).rgb(bottomR, bottomG, bottomB)("▄");
 }
 
 export function shouldUseKittyProtocol(terminalInfo: TerminalInfo): boolean {
