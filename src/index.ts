@@ -1,17 +1,17 @@
-import process from 'node:process';
-import fs from 'node:fs';
-import fsPromises from 'node:fs/promises';
-import chalk from 'chalk';
-import {Jimp, intToRGBA} from 'jimp';
-import {renderGif, type GifRenderOptions} from './gif-renderer.js';
-import termImg from 'term-img';
-import {imageDimensionsFromData} from 'image-dimensions';
+import process from "node:process";
+import fs from "node:fs";
+import fsPromises from "node:fs/promises";
+import chalk from "chalk";
+import { Jimp, intToRGBA } from "jimp";
+import { renderGif, type GifRenderOptions } from "./gif-renderer.js";
+import termImg from "term-img";
+import { imageDimensionsFromData } from "image-dimensions";
 
 const ROW_OFFSET = 2;
-const PIXEL = '\u2584';
+const PIXEL = "\u2584";
 
 // Import terminal detection utilities
-import { detectTerminal, type TerminalInfo } from './terminal-utils.js';
+import { detectTerminal, type TerminalInfo } from "./terminal-utils.js";
 
 // Cache terminal info
 let terminalInfo: TerminalInfo | null = null;
@@ -44,74 +44,95 @@ export interface GifOptions extends RenderOptions {
 }
 
 interface TerminalImage {
-  buffer(buffer: Readonly<Uint8Array>, options?: RenderOptions): Promise<string>;
+  buffer(
+    buffer: Readonly<Uint8Array>,
+    options?: RenderOptions,
+  ): Promise<string>;
   file(filePath: string, options?: RenderOptions): Promise<string>;
-  gifBuffer(buffer: Readonly<Uint8Array>, options?: GifOptions): Promise<() => void>;
+  gifBuffer(
+    buffer: Readonly<Uint8Array>,
+    options?: GifOptions,
+  ): Promise<() => void>;
   gifFile(filePath: string, options?: GifOptions): Promise<() => void>;
 }
 
 // Custom smooth frame renderer using cursor control
 class SmoothRenderer {
-  private currentFrame: string = '';
+  private currentFrame: string = "";
   private frameHeight: number = 0;
-  
+
   render(frame: string): void {
-    const lines = frame.split('\n');
+    const lines = frame.split("\n");
     const newHeight = lines.length;
-    
+
     // Move cursor to beginning
-    process.stdout.write('\x1b[H');
-    
+    process.stdout.write("\x1b[H");
+
     // If this is the first frame or height changed, clear screen
     if (this.frameHeight === 0 || this.frameHeight !== newHeight) {
-      process.stdout.write('\x1b[2J\x1b[H');
+      process.stdout.write("\x1b[2J\x1b[H");
       this.frameHeight = newHeight;
     } else {
       // Move cursor up to overwrite previous frame
       process.stdout.write(`\x1b[${newHeight}A`);
     }
-    
+
     // Write the frame directly without clearing
     process.stdout.write(frame);
-    
+
     // Clear any remaining lines from previous frame if it was taller
     if (this.frameHeight > newHeight) {
       for (let i = 0; i < this.frameHeight - newHeight; i++) {
-        process.stdout.write('\x1b[K\n');
+        process.stdout.write("\x1b[K\n");
       }
     }
-    
+
     this.currentFrame = frame;
   }
-  
+
   done(): void {
     // Move cursor below the animation
     if (this.frameHeight > 0) {
       process.stdout.write(`\x1b[${this.frameHeight + 1}H`);
     }
-    process.stdout.write('\n');
+    process.stdout.write("\n");
   }
 }
 
-function scale(width: number, height: number, originalWidth: number, originalHeight: number) {
+function scale(
+  width: number,
+  height: number,
+  originalWidth: number,
+  originalHeight: number,
+) {
   const originalRatio = originalWidth / originalHeight;
-  const factor = width / height > originalRatio ? height / originalHeight : width / originalWidth;
+  const factor =
+    width / height > originalRatio
+      ? height / originalHeight
+      : width / originalWidth;
   return {
     width: factor * originalWidth,
-    height: factor * originalHeight
+    height: factor * originalHeight,
   };
 }
 
-function checkAndGetDimensionValue(value: DimensionValue, percentageBase: number) {
-  if (typeof value === 'string' && value.endsWith('%')) {
+function checkAndGetDimensionValue(
+  value: DimensionValue,
+  percentageBase: number,
+) {
+  if (typeof value === "string" && value.endsWith("%")) {
     const percentageValue = Number.parseFloat(value);
 
-    if (!Number.isNaN(percentageValue) && percentageValue > 0 && percentageValue <= 100) {
+    if (
+      !Number.isNaN(percentageValue) &&
+      percentageValue > 0 &&
+      percentageValue <= 100
+    ) {
       return Math.floor((percentageValue / 100) * percentageBase);
     }
   }
 
-  if (typeof value === 'number') {
+  if (typeof value === "number") {
     return value;
   }
 
@@ -123,7 +144,7 @@ function calculateWidthHeight(
   imageHeight: number,
   inputWidth: DimensionValue | undefined,
   inputHeight: DimensionValue | undefined,
-  preserveAspectRatio: boolean
+  preserveAspectRatio: boolean,
 ) {
   const terminalColumns = process.stdout.columns ?? 80;
   const terminalRows = Math.max(1, (process.stdout.rows ?? 24) - ROW_OFFSET);
@@ -136,7 +157,7 @@ function calculateWidthHeight(
     height = checkAndGetDimensionValue(inputHeight, terminalRows) * 2;
 
     if (preserveAspectRatio) {
-      ({width, height} = scale(width, height, imageWidth, imageHeight));
+      ({ width, height } = scale(width, height, imageWidth, imageHeight));
     }
   } else if (inputWidth) {
     width = checkAndGetDimensionValue(inputWidth, terminalColumns);
@@ -145,63 +166,82 @@ function calculateWidthHeight(
     height = checkAndGetDimensionValue(inputHeight, terminalRows) * 2;
     width = (imageWidth * height) / imageHeight;
   } else {
-    ({width, height} = scale(terminalColumns, terminalRows * 2, imageWidth, imageHeight));
+    ({ width, height } = scale(
+      terminalColumns,
+      terminalRows * 2,
+      imageWidth,
+      imageHeight,
+    ));
   }
 
   if (width > terminalColumns) {
-    ({width, height} = scale(terminalColumns, terminalRows * 2, width, height));
+    ({ width, height } = scale(
+      terminalColumns,
+      terminalRows * 2,
+      width,
+      height,
+    ));
   }
 
   return {
     width: Math.round(width),
-    height: Math.round(height)
+    height: Math.round(height),
   };
 }
 
 async function renderAnsi(
   buffer: Readonly<Uint8Array>,
-  {width: inputWidth, height: inputHeight, preserveAspectRatio}: RenderOptions
+  {
+    width: inputWidth,
+    height: inputHeight,
+    preserveAspectRatio,
+  }: RenderOptions,
 ) {
   const image = await Jimp.read(Buffer.from(buffer));
-  const {width, height} = calculateWidthHeight(
+  const { width, height } = calculateWidthHeight(
     image.bitmap.width,
     image.bitmap.height,
     inputWidth,
     inputHeight,
-    preserveAspectRatio ?? true
+    preserveAspectRatio ?? true,
   );
 
-  image.resize({w: width, h: height});
+  image.resize({ w: width, h: height });
 
   const termInfo = getTerminalInfo();
   const lines: string[] = [];
-  
+
   for (let y = 0; y < image.bitmap.height - 1; y += 2) {
-    let line = '';
+    let line = "";
 
     for (let x = 0; x < image.bitmap.width; x++) {
-      const {r, g, b, a} = intToRGBA(image.getPixelColor(x, y));
-      const {r: r2, g: g2, b: b2, a: a2} = intToRGBA(image.getPixelColor(x, y + 1));
+      const { r, g, b, a } = intToRGBA(image.getPixelColor(x, y));
+      const {
+        r: r2,
+        g: g2,
+        b: b2,
+        a: a2,
+      } = intToRGBA(image.getPixelColor(x, y + 1));
 
       // Terminal-specific handling for transparency
       if (termInfo.useSpaceForTransparency && (a < 128 || a2 < 128)) {
         // For terminals that don't handle transparency well, use spaces
-        line += ' ';
+        line += " ";
       } else if (a === 0 && a2 === 0) {
         // Both pixels transparent
-        line += ' ';
+        line += " ";
       } else if (a === 0 || a < 50) {
         // Top pixel transparent or nearly transparent
-        line += chalk.rgb(r2, g2, b2)('▀');
+        line += chalk.rgb(r2, g2, b2)("▀");
       } else if (a2 === 0 || a2 < 50) {
         // Bottom pixel transparent or nearly transparent
-        line += chalk.rgb(r, g, b)('▄');
+        line += chalk.rgb(r, g, b)("▄");
       } else {
         // Both pixels opaque - normal rendering
         // For some terminals, adjust the rendering approach
-        if (termInfo.type === 'windows-terminal') {
+        if (termInfo.type === "windows-terminal") {
           // Windows Terminal sometimes has issues with background colors
-          line += chalk.bgRgb(r, g, b).rgb(r2, g2, b2)('▄');
+          line += chalk.bgRgb(r, g, b).rgb(r2, g2, b2)("▄");
         } else {
           line += chalk.bgRgb(r, g, b).rgb(r2, g2, b2)(PIXEL);
         }
@@ -211,18 +251,18 @@ async function renderAnsi(
     lines.push(line);
   }
 
-  return lines.join('\n');
+  return lines.join("\n");
 }
 
 function drawImageWithKitty(buffer: Buffer, columns?: number, rows?: number) {
-  const base64Data = buffer.toString('base64');
+  const base64Data = buffer.toString("base64");
   const chunks: string[] = [];
 
   for (let index = 0; index < base64Data.length; index += 4096) {
     chunks.push(base64Data.slice(index, index + 4096));
   }
 
-  let controlData = 'f=100,a=T';
+  let controlData = "f=100,a=T";
 
   if (columns && columns > 0) {
     controlData += `,c=${Math.round(columns)}`;
@@ -237,7 +277,9 @@ function drawImageWithKitty(buffer: Buffer, columns?: number, rows?: number) {
     const isLast = index === chunks.length - 1;
 
     if (index === 0) {
-      process.stdout.write(`\u001B_G${controlData},m=${isLast ? 0 : 1};${chunk}\u001B\\`);
+      process.stdout.write(
+        `\u001B_G${controlData},m=${isLast ? 0 : 1};${chunk}\u001B\\`,
+      );
     } else {
       process.stdout.write(`\u001B_Gm=${isLast ? 0 : 1};${chunk}\u001B\\`);
     }
@@ -246,7 +288,11 @@ function drawImageWithKitty(buffer: Buffer, columns?: number, rows?: number) {
 
 async function renderKitty(
   buffer: Readonly<Uint8Array>,
-  {width: inputWidth, height: inputHeight, preserveAspectRatio}: RenderOptions
+  {
+    width: inputWidth,
+    height: inputHeight,
+    preserveAspectRatio,
+  }: RenderOptions,
 ) {
   const terminalColumns = (process.stdout.columns ?? 80) - 2;
   const terminalRows = Math.max(1, (process.stdout.rows ?? 24) - 4);
@@ -254,19 +300,19 @@ async function renderKitty(
   let columns: number;
   let rows: number;
 
-  if (typeof inputWidth === 'string' && inputWidth.endsWith('%')) {
+  if (typeof inputWidth === "string" && inputWidth.endsWith("%")) {
     const percentage = Number.parseFloat(inputWidth) / 100;
     columns = Math.floor(terminalColumns * percentage);
-  } else if (typeof inputWidth === 'number') {
+  } else if (typeof inputWidth === "number") {
     columns = Math.min(inputWidth, terminalColumns);
   } else {
     columns = terminalColumns;
   }
 
-  if (typeof inputHeight === 'string' && inputHeight.endsWith('%')) {
+  if (typeof inputHeight === "string" && inputHeight.endsWith("%")) {
     const percentage = Number.parseFloat(inputHeight) / 100;
     rows = Math.floor(terminalRows * percentage);
-  } else if (typeof inputHeight === 'number') {
+  } else if (typeof inputHeight === "number") {
     rows = Math.min(inputHeight, terminalRows);
   } else if (preserveAspectRatio) {
     rows = terminalRows;
@@ -275,11 +321,15 @@ async function renderKitty(
   }
 
   let imageBuffer = Buffer.from(buffer);
-  const isPng = buffer[0] === 0x89 && buffer[1] === 0x50 && buffer[2] === 0x4e && buffer[3] === 0x47;
+  const isPng =
+    buffer[0] === 0x89 &&
+    buffer[1] === 0x50 &&
+    buffer[2] === 0x4e &&
+    buffer[3] === 0x47;
 
   if (!isPng) {
     const image = await Jimp.read(Buffer.from(buffer));
-    imageBuffer = Buffer.from(await image.getBuffer('image/png'));
+    imageBuffer = Buffer.from(await image.getBuffer("image/png"));
   }
 
   if (preserveAspectRatio) {
@@ -302,42 +352,59 @@ async function renderKitty(
     drawImageWithKitty(imageBuffer, columns, rows);
   }
 
-  return '';
+  return "";
 }
 
-async function renderBuffer(buffer: Readonly<Uint8Array>, options: InternalRenderOptions = {}) {
-  const {width = '100%', height = '100%', preserveAspectRatio = true, isGifFrame = false} = options;
+async function renderBuffer(
+  buffer: Readonly<Uint8Array>,
+  options: InternalRenderOptions = {},
+) {
+  const {
+    width = "100%",
+    height = "100%",
+    preserveAspectRatio = true,
+    isGifFrame = false,
+  } = options;
 
   if (!isGifFrame && process.stdout.isTTY) {
     const termInfo = getTerminalInfo();
-    
+
     // Use terminal-specific rendering
-    if (termInfo.type === 'iterm') {
+    if (termInfo.type === "iterm") {
       // iTerm has native support - let term-img handle it
-      const fallback = () => renderAnsi(buffer, {width, height, preserveAspectRatio});
+      const fallback = () =>
+        renderAnsi(buffer, { width, height, preserveAspectRatio });
       const rendered = termImg(buffer, {
         width,
         height,
-        fallback
+        fallback,
       });
-      
-      if (typeof rendered === 'string') {
+
+      if (typeof rendered === "string") {
         return rendered;
       }
-      
+
       return fallback();
-    } else if (termInfo.type === 'kitty' || termInfo.type === 'wezterm' || termInfo.type === 'konsole') {
+    } else if (
+      termInfo.type === "kitty" ||
+      termInfo.type === "wezterm" ||
+      termInfo.type === "konsole"
+    ) {
       // Use Kitty protocol for these terminals
       try {
-        return await renderKitty(buffer, {width, height, preserveAspectRatio});
+        return await renderKitty(buffer, {
+          width,
+          height,
+          preserveAspectRatio,
+        });
       } catch {
-        return renderAnsi(buffer, {width, height, preserveAspectRatio});
+        return renderAnsi(buffer, { width, height, preserveAspectRatio });
       }
     }
   }
 
   // Default to ANSI rendering
-  return renderAnsi(buffer, {width, height, preserveAspectRatio});
+  return renderAnsi(buffer, { width, height, preserveAspectRatio });
 }
 
 const terminalImage: TerminalImage = {
@@ -352,12 +419,14 @@ const terminalImage: TerminalImage = {
 
   async gifBuffer(buffer, options = {}) {
     const smoothRenderer = new SmoothRenderer();
-    
-    const resolvedOptions: Required<Pick<GifOptions, 'renderFrame'>> & GifOptions = {
+
+    const resolvedOptions: Required<Pick<GifOptions, "renderFrame">> &
+      GifOptions = {
       maximumFrameRate: 30,
       preserveAspectRatio: true,
-      renderFrame: ((text: string) => smoothRenderer.render(text)) as RenderFrame,
-      ...options
+      renderFrame: ((text: string) =>
+        smoothRenderer.render(text)) as RenderFrame,
+      ...options,
     };
 
     // Override renderFrame.done if using smooth renderer
@@ -371,13 +440,13 @@ const terminalImage: TerminalImage = {
 
     const dimensions = imageDimensionsFromData(buffer);
     if ((dimensions?.width ?? 0) < 2 || (dimensions?.height ?? 0) < 2) {
-      throw new Error('The image is too small to be rendered.');
+      throw new Error("The image is too small to be rendered.");
     }
 
     const nativeResult = termImg(buffer, {
       width: resolvedOptions.width,
       height: resolvedOptions.height,
-      fallback: () => false
+      fallback: () => false,
     });
 
     if (nativeResult) {
@@ -390,22 +459,22 @@ const terminalImage: TerminalImage = {
       width: resolvedOptions.width,
       height: resolvedOptions.height,
       preserveAspectRatio: resolvedOptions.preserveAspectRatio,
-      maximumFrameRate: resolvedOptions.maximumFrameRate
+      maximumFrameRate: resolvedOptions.maximumFrameRate,
     };
 
     const animation = await renderGif(
       buffer,
-      async frameData => {
+      async (frameData) => {
         const frame = await renderBuffer(frameData, {
           width: resolvedOptions.width,
           height: resolvedOptions.height,
           preserveAspectRatio: resolvedOptions.preserveAspectRatio,
-          isGifFrame: true
+          isGifFrame: true,
         });
 
         renderFrame(frame);
       },
-      animationOptions
+      animationOptions,
     );
 
     return () => {
@@ -417,7 +486,7 @@ const terminalImage: TerminalImage = {
   async gifFile(filePath, options) {
     const data = fs.readFileSync(filePath);
     return this.gifBuffer(data, options);
-  }
+  },
 };
 
 export default terminalImage;

@@ -9,12 +9,14 @@ Pixelpop is a terminal utility library for displaying and animating images, GIFs
 ## Development Commands
 
 ### Building
+
 ```bash
 npm run build        # Compile TypeScript to dist/
 npm run clean        # Remove dist directory
 ```
 
 ### Code Quality
+
 ```bash
 npm run lint         # Run ESLint
 npm run lint:fix     # Run ESLint with auto-fix
@@ -22,6 +24,7 @@ npm run typecheck    # Run TypeScript compiler without emitting files
 ```
 
 ### Package Management
+
 ```bash
 npm run prepare      # Runs automatically on npm install, builds the project
 ```
@@ -45,6 +48,7 @@ The library is structured around three main rendering strategies:
 ### Rendering Pipeline
 
 The rendering process follows this flow:
+
 1. **Terminal Detection**: Check environment variables and TTY status to determine capabilities
 2. **Image Processing**: Use Jimp for image manipulation (resizing, color extraction)
 3. **Output Strategy**: Select between native, Kitty protocol, or ANSI rendering
@@ -53,6 +57,7 @@ The rendering process follows this flow:
 ### GIF Animation System
 
 GIF rendering uses FFmpeg (via ffmpeg-static) to extract frames to temporary PNG files, then renders each frame in sequence with controlled timing. The animation loop supports:
+
 - Frame rate limiting (maximumFrameRate option)
 - Graceful cleanup of temporary files
 - Playback control via returned stop function
@@ -60,6 +65,7 @@ GIF rendering uses FFmpeg (via ffmpeg-static) to extract frames to temporary PNG
 ### API Design
 
 The library exports a default object with four main methods:
+
 - `buffer()` / `file()`: Static image rendering
 - `gifBuffer()` / `gifFile()`: Animated GIF rendering
 
@@ -68,6 +74,7 @@ All methods support consistent options for width, height, and aspect ratio prese
 ## Dependencies
 
 ### Runtime Dependencies
+
 - **chalk**: Terminal color support
 - **ffmpeg-static**: Bundled FFmpeg binary for GIF processing
 - **fluent-ffmpeg**: FFmpeg wrapper API
@@ -77,6 +84,7 @@ All methods support consistent options for width, height, and aspect ratio prese
 - **image-dimensions**: Fast image dimension detection
 
 ### Development Dependencies
+
 - **TypeScript**: Primary language with ES2022 target
 - **ESLint**: Code linting with TypeScript support
 - **Prettier**: Code formatting
@@ -91,6 +99,7 @@ All methods support consistent options for width, height, and aspect ratio prese
 ## Testing Examples
 
 The `examples/` directory contains usage demonstrations:
+
 - `example.ts`: Basic static image rendering
 - `example_gif.ts`: Animated GIF playbook with stop control
 - `example_pixel.ts`: ANSI pixel rendering demo
