@@ -18,10 +18,11 @@ Pixelpop uses intelligent terminal detection to provide the best possible image 
 
 ```typescript
 // Automatically used when detected - no configuration needed
-await pixelPop.file('./image.jpg', { width: '80%' });
+await pixelPop.file("./image.jpg", { width: "80%" });
 ```
 
 **Environment Detection**:
+
 ```bash
 TERM_PROGRAM=iTerm.app
 # or
@@ -40,18 +41,19 @@ TERM_PROGRAM=Hyper
 
 ```typescript
 // Automatically detected and used
-await pixelPop.file('./photo.png', { 
-  width: '90%',
-  preserveAspectRatio: true 
+await pixelPop.file("./photo.png", {
+  width: "90%",
+  preserveAspectRatio: true,
 });
 ```
 
 **Environment Detection**:
+
 ```bash
 TERM=xterm-kitty
 # or
 KITTY_WINDOW_ID=123
-# or  
+# or
 TERM_PROGRAM=WezTerm
 # or
 TERM_PROGRAM=konsole
@@ -71,8 +73,8 @@ KONSOLE_VERSION=21.12.3
 
 ```typescript
 // Used automatically when native/Kitty aren't available
-await pixelPop.file('./artwork.jpg', { 
-  width: '70%' 
+await pixelPop.file("./artwork.jpg", {
+  width: "70%",
 });
 ```
 
@@ -82,18 +84,18 @@ await pixelPop.file('./artwork.jpg', {
 
 ## 📊 Terminal Compatibility Matrix
 
-| Terminal | Strategy | macOS | Windows | Linux | Quality | Notes |
-|----------|----------|-------|---------|--------|---------|--------|
-| **iTerm2** | Native | ✅ | ❌ | ❌ | ⭐⭐⭐⭐⭐ | Best quality, macOS only |
-| **Kitty** | Kitty Protocol | ✅ | ✅ | ✅ | ⭐⭐⭐⭐⭐ | Cross-platform, excellent |
-| **WezTerm** | Kitty Protocol | ✅ | ✅ | ✅ | ⭐⭐⭐⭐⭐ | Modern, fast rendering |
-| **Konsole** | Kitty Protocol | ❌ | ❌ | ✅ | ⭐⭐⭐⭐ | KDE default terminal |
-| **VS Code Terminal** | ANSI Fallback | ✅ | ✅ | ✅ | ⭐⭐⭐ | Integrated terminal, optimized |
-| **Windows Terminal** | ANSI Fallback | ❌ | ✅ | ✅ | ⭐⭐⭐ | Modern Windows terminal |
-| **Alacritty** | ANSI Fallback | ✅ | ✅ | ✅ | ⭐⭐⭐ | Fast, GPU-accelerated |
-| **Terminal.app** | ANSI Fallback | ✅ | ❌ | ❌ | ⭐⭐⭐ | macOS default |
-| **GNOME Terminal** | ANSI Fallback | ❌ | ❌ | ✅ | ⭐⭐⭐ | Linux default |
-| **xterm** | ANSI Fallback | ✅ | ✅ | ✅ | ⭐⭐ | Basic but universal |
+| Terminal             | Strategy       | macOS | Windows | Linux | Quality    | Notes                          |
+| -------------------- | -------------- | ----- | ------- | ----- | ---------- | ------------------------------ |
+| **iTerm2**           | Native         | ✅    | ❌      | ❌    | ⭐⭐⭐⭐⭐ | Best quality, macOS only       |
+| **Kitty**            | Kitty Protocol | ✅    | ✅      | ✅    | ⭐⭐⭐⭐⭐ | Cross-platform, excellent      |
+| **WezTerm**          | Kitty Protocol | ✅    | ✅      | ✅    | ⭐⭐⭐⭐⭐ | Modern, fast rendering         |
+| **Konsole**          | Kitty Protocol | ❌    | ❌      | ✅    | ⭐⭐⭐⭐   | KDE default terminal           |
+| **VS Code Terminal** | ANSI Fallback  | ✅    | ✅      | ✅    | ⭐⭐⭐     | Integrated terminal, optimized |
+| **Windows Terminal** | ANSI Fallback  | ❌    | ✅      | ✅    | ⭐⭐⭐     | Modern Windows terminal        |
+| **Alacritty**        | ANSI Fallback  | ✅    | ✅      | ✅    | ⭐⭐⭐     | Fast, GPU-accelerated          |
+| **Terminal.app**     | ANSI Fallback  | ✅    | ❌      | ❌    | ⭐⭐⭐     | macOS default                  |
+| **GNOME Terminal**   | ANSI Fallback  | ❌    | ❌      | ✅    | ⭐⭐⭐     | Linux default                  |
+| **xterm**            | ANSI Fallback  | ✅    | ✅      | ✅    | ⭐⭐       | Basic but universal            |
 
 ---
 
@@ -104,7 +106,7 @@ await pixelPop.file('./artwork.jpg', {
 Pixelpop checks these environment variables in order:
 
 1. **`TERM_PROGRAM`** - Primary terminal identifier
-2. **`TERM`** - Terminal type specification  
+2. **`TERM`** - Terminal type specification
 3. **`KITTY_WINDOW_ID`** - Kitty-specific identifier
 4. **`KONSOLE_VERSION`** - Konsole version info
 
@@ -113,32 +115,32 @@ Pixelpop checks these environment variables in order:
 ```typescript
 function detectTerminal() {
   const env = process.env;
-  
-  console.log('🔍 Terminal Detection Results:');
+
+  console.log("🔍 Terminal Detection Results:");
   console.log(`TERM_PROGRAM: ${env.TERM_PROGRAM}`);
   console.log(`TERM: ${env.TERM}`);
   console.log(`KITTY_WINDOW_ID: ${env.KITTY_WINDOW_ID}`);
   console.log(`KONSOLE_VERSION: ${env.KONSOLE_VERSION}`);
-  
+
   // Determine strategy
-  if (env.TERM_PROGRAM === 'iTerm.app') {
-    console.log('✨ Strategy: Native Support (Premium)');
+  if (env.TERM_PROGRAM === "iTerm.app") {
+    console.log("✨ Strategy: Native Support (Premium)");
   } else if (
-    env.TERM === 'xterm-kitty' ||
+    env.TERM === "xterm-kitty" ||
     env.KITTY_WINDOW_ID ||
-    env.TERM_PROGRAM === 'WezTerm' ||
-    env.TERM_PROGRAM === 'konsole' ||
+    env.TERM_PROGRAM === "WezTerm" ||
+    env.TERM_PROGRAM === "konsole" ||
     env.KONSOLE_VERSION
   ) {
-    console.log('⚡ Strategy: Kitty Protocol (High Quality)');
-  } else if (env.TERM_PROGRAM === 'vscode') {
-    console.log('💻 Strategy: ANSI Fallback (VS Code Optimized)');
-  } else if (env.WT_SESSION || env.WSLENV?.includes('WT_SESSION')) {
-    console.log('💻 Strategy: ANSI Fallback (Windows Terminal)');
+    console.log("⚡ Strategy: Kitty Protocol (High Quality)");
+  } else if (env.TERM_PROGRAM === "vscode") {
+    console.log("💻 Strategy: ANSI Fallback (VS Code Optimized)");
+  } else if (env.WT_SESSION || env.WSLENV?.includes("WT_SESSION")) {
+    console.log("💻 Strategy: ANSI Fallback (Windows Terminal)");
   } else if (env.ALACRITTY_SOCKET) {
-    console.log('⚡ Strategy: ANSI Fallback (Alacritty)');
+    console.log("⚡ Strategy: ANSI Fallback (Alacritty)");
   } else {
-    console.log('🌈 Strategy: ANSI Fallback (Universal)');
+    console.log("🌈 Strategy: ANSI Fallback (Universal)");
   }
 }
 
@@ -153,22 +155,24 @@ detectTerminal();
 ### iTerm2 (macOS)
 
 **Best practices**:
+
 ```typescript
 // iTerm2 handles large images very well
-await pixelPop.file('./high-res-photo.jpg', {
-  width: '100%',    // Can use full terminal width
-  height: '90%',    // Can use most of terminal height
-  preserveAspectRatio: true
+await pixelPop.file("./high-res-photo.jpg", {
+  width: "100%", // Can use full terminal width
+  height: "90%", // Can use most of terminal height
+  preserveAspectRatio: true,
 });
 
 // Excellent GIF support
-const stop = await pixelPop.gifFile('./complex-animation.gif', {
-  width: '95%',
-  maximumFrameRate: 60  // High frame rates work well
+const stop = await pixelPop.gifFile("./complex-animation.gif", {
+  width: "95%",
+  maximumFrameRate: 60, // High frame rates work well
 });
 ```
 
 **Tips**:
+
 - Supports transparency
 - Handles very large images
 - Excellent color reproduction
@@ -179,20 +183,22 @@ const stop = await pixelPop.gifFile('./complex-animation.gif', {
 ### Kitty Terminal
 
 **Best practices**:
+
 ```typescript
 // Kitty has excellent performance
-await pixelPop.file('./detailed-image.png', {
-  width: '85%',
-  preserveAspectRatio: true
+await pixelPop.file("./detailed-image.png", {
+  width: "85%",
+  preserveAspectRatio: true,
 });
 
 // Great GIF performance
-const stop = await pixelPop.gifFile('./smooth-anim.gif', {
-  maximumFrameRate: 30  // Good balance
+const stop = await pixelPop.gifFile("./smooth-anim.gif", {
+  maximumFrameRate: 30, // Good balance
 });
 ```
 
 **Configuration tips**:
+
 ```bash
 # In kitty.conf for optimal experience
 enable_audio_bell no
@@ -205,21 +211,23 @@ window_padding_width 4
 ### WezTerm
 
 **Best practices**:
+
 ```typescript
 // WezTerm handles medium to large images well
-await pixelPop.file('./photo.jpg', {
-  width: '75%',
-  height: '80%',
-  preserveAspectRatio: true
+await pixelPop.file("./photo.jpg", {
+  width: "75%",
+  height: "80%",
+  preserveAspectRatio: true,
 });
 
 // Smooth animations
-const stop = await pixelPop.gifFile('./loading.gif', {
-  maximumFrameRate: 25
+const stop = await pixelPop.gifFile("./loading.gif", {
+  maximumFrameRate: 25,
 });
 ```
 
 **Configuration optimization**:
+
 ```lua
 -- In wezterm.lua
 return {
@@ -236,24 +244,26 @@ return {
 ### Standard Terminals (ANSI Fallback)
 
 **Best practices**:
+
 ```typescript
 // Use smaller sizes for better readability
-await pixelPop.file('./image.jpg', {
-  width: '60%',     // Smaller width for better blocks
-  height: 40,       // Fixed height for consistency
-  preserveAspectRatio: true
+await pixelPop.file("./image.jpg", {
+  width: "60%", // Smaller width for better blocks
+  height: 40, // Fixed height for consistency
+  preserveAspectRatio: true,
 });
 
 // Lower frame rates for better performance
-const stop = await pixelPop.gifFile('./anim.gif', {
-  width: '50%',
-  maximumFrameRate: 15  // Easier on CPU
+const stop = await pixelPop.gifFile("./anim.gif", {
+  width: "50%",
+  maximumFrameRate: 15, // Easier on CPU
 });
 ```
 
 **Tips for ANSI rendering**:
+
 - Smaller images often look better
-- High contrast images work best  
+- High contrast images work best
 - Simple graphics are more recognizable
 - Lower frame rates reduce flicker
 
@@ -264,35 +274,38 @@ const stop = await pixelPop.gifFile('./anim.gif', {
 ### By Terminal Type
 
 #### Native Support Terminals
+
 ```typescript
 // Can handle larger images and higher frame rates
 const options = {
-  maxWidth: '100%',
-  maxHeight: '90%', 
+  maxWidth: "100%",
+  maxHeight: "90%",
   maxFrameRate: 60,
-  qualityLevel: 'maximum'
+  qualityLevel: "maximum",
 };
 ```
 
-#### Kitty Protocol Terminals  
+#### Kitty Protocol Terminals
+
 ```typescript
 // Excellent performance, moderate resource usage
 const options = {
-  maxWidth: '85%',
-  maxHeight: '80%',
+  maxWidth: "85%",
+  maxHeight: "80%",
   maxFrameRate: 30,
-  qualityLevel: 'high'
+  qualityLevel: "high",
 };
 ```
 
 #### ANSI Fallback Terminals
+
 ```typescript
 // Conservative settings for best compatibility
 const options = {
-  maxWidth: '60%', 
+  maxWidth: "60%",
   maxHeight: 30,
   maxFrameRate: 15,
-  qualityLevel: 'good'
+  qualityLevel: "good",
 };
 ```
 
@@ -302,32 +315,32 @@ const options = {
 async function displayWithAdaptiveQuality(imagePath: string) {
   const env = process.env;
   let options;
-  
-  if (env.TERM_PROGRAM === 'iTerm.app') {
+
+  if (env.TERM_PROGRAM === "iTerm.app") {
     // Native support - use maximum quality
     options = {
-      width: '100%',
-      maximumFrameRate: 60
+      width: "100%",
+      maximumFrameRate: 60,
     };
   } else if (
-    env.TERM === 'xterm-kitty' ||
+    env.TERM === "xterm-kitty" ||
     env.KITTY_WINDOW_ID ||
-    env.TERM_PROGRAM === 'WezTerm'
+    env.TERM_PROGRAM === "WezTerm"
   ) {
     // Kitty protocol - high quality
     options = {
-      width: '80%',
-      maximumFrameRate: 30
+      width: "80%",
+      maximumFrameRate: 30,
     };
   } else {
     // ANSI fallback - optimized for readability
     options = {
-      width: '60%',
-      maximumFrameRate: 15
+      width: "60%",
+      maximumFrameRate: 15,
     };
   }
-  
-  if (imagePath.endsWith('.gif')) {
+
+  if (imagePath.endsWith(".gif")) {
     return await pixelPop.gifFile(imagePath, options);
   } else {
     return await pixelPop.file(imagePath, options);
@@ -344,11 +357,12 @@ async function displayWithAdaptiveQuality(imagePath: string) {
 #### iTerm2 Issues
 
 **Problem**: Images not displaying
+
 ```typescript
 // Check iTerm2 version and settings
-console.log('iTerm2 Version Check:');
-console.log('• Go to iTerm2 > About iTerm2');
-console.log('• Ensure version 3.0+ for best support');
+console.log("iTerm2 Version Check:");
+console.log("• Go to iTerm2 > About iTerm2");
+console.log("• Ensure version 3.0+ for best support");
 ```
 
 **Solution**: Update iTerm2 or check image file format
@@ -356,6 +370,7 @@ console.log('• Ensure version 3.0+ for best support');
 #### Kitty Terminal Issues
 
 **Problem**: Pixelated or corrupted images
+
 ```bash
 # Check Kitty version
 kitty --version
@@ -363,27 +378,30 @@ kitty --version
 ```
 
 **Problem**: Images not clearing properly
+
 ```typescript
 // Manual cleanup in Kitty
-process.stdout.write('\x1b_Ga=d\x1b\\');
+process.stdout.write("\x1b_Ga=d\x1b\\");
 ```
 
 #### ANSI Fallback Issues
 
-**Problem**: Images look unrecognizable  
+**Problem**: Images look unrecognizable
+
 ```typescript
 // Try smaller dimensions
-await pixelPop.file('./image.jpg', {
-  width: 40,        // Very small width
-  height: 20,       // Very small height
-  preserveAspectRatio: true
+await pixelPop.file("./image.jpg", {
+  width: 40, // Very small width
+  height: 20, // Very small height
+  preserveAspectRatio: true,
 });
 ```
 
 **Problem**: Colors look wrong
+
 ```typescript
 // Check terminal color support
-console.log('Color depth:', process.stdout.hasColors(256) ? '256' : 'basic');
+console.log("Color depth:", process.stdout.hasColors(256) ? "256" : "basic");
 ```
 
 ---
@@ -392,49 +410,52 @@ console.log('Color depth:', process.stdout.hasColors(256) ? '256' : 'basic');
 
 ### By Terminal Capability
 
-| Terminal Type | Recommended Width | Recommended Height | Max Frame Rate |
-|---------------|-------------------|-------------------|----------------|
-| **Native** | 80%-100% | 70%-90% | 30-60 FPS |
-| **Kitty Protocol** | 60%-80% | 50%-70% | 20-30 FPS |
-| **ANSI Fallback** | 40%-60% | 20-40 rows | 10-20 FPS |
+| Terminal Type      | Recommended Width | Recommended Height | Max Frame Rate |
+| ------------------ | ----------------- | ------------------ | -------------- |
+| **Native**         | 80%-100%          | 70%-90%            | 30-60 FPS      |
+| **Kitty Protocol** | 60%-80%           | 50%-70%            | 20-30 FPS      |
+| **ANSI Fallback**  | 40%-60%           | 20-40 rows         | 10-20 FPS      |
 
 ### Image Type Recommendations
 
 #### Photos and Complex Images
+
 ```typescript
 // Native/Kitty: Use original size, let terminal handle
-await pixelPop.file('./photo.jpg', {
-  width: '85%',
-  preserveAspectRatio: true
+await pixelPop.file("./photo.jpg", {
+  width: "85%",
+  preserveAspectRatio: true,
 });
 
-// ANSI: Use smaller sizes for better recognition  
-await pixelPop.file('./photo.jpg', {
+// ANSI: Use smaller sizes for better recognition
+await pixelPop.file("./photo.jpg", {
   width: 50,
   height: 30,
-  preserveAspectRatio: true
+  preserveAspectRatio: true,
 });
 ```
 
 #### Icons and Simple Graphics
+
 ```typescript
 // Work well at smaller sizes across all terminals
-await pixelPop.file('./icon.png', {
+await pixelPop.file("./icon.png", {
   width: 20,
   height: 20,
-  preserveAspectRatio: false  // Icons often benefit from exact sizing
+  preserveAspectRatio: false, // Icons often benefit from exact sizing
 });
 ```
 
 #### GIF Animations
+
 ```typescript
 // Adjust frame rate based on terminal capability
-const frameRate = env.TERM_PROGRAM === 'iTerm.app' ? 30 : 
-                  env.TERM === 'xterm-kitty' ? 24 : 15;
+const frameRate =
+  env.TERM_PROGRAM === "iTerm.app" ? 30 : env.TERM === "xterm-kitty" ? 24 : 15;
 
-const stop = await pixelPop.gifFile('./anim.gif', {
-  width: '60%',
-  maximumFrameRate: frameRate
+const stop = await pixelPop.gifFile("./anim.gif", {
+  width: "60%",
+  maximumFrameRate: frameRate,
 });
 ```
 
@@ -446,33 +467,33 @@ const stop = await pixelPop.gifFile('./anim.gif', {
 
 ```typescript
 async function testTerminalCapabilities() {
-  console.log('🧪 Testing Terminal Capabilities\n');
-  
+  console.log("🧪 Testing Terminal Capabilities\n");
+
   // Environment check
   const env = process.env;
-  console.log('📋 Environment Variables:');
+  console.log("📋 Environment Variables:");
   console.log(`TERM: ${env.TERM}`);
   console.log(`TERM_PROGRAM: ${env.TERM_PROGRAM}`);
   console.log(`COLORTERM: ${env.COLORTERM}`);
-  
+
   // Color support test
-  console.log('\n🎨 Color Support:');
+  console.log("\n🎨 Color Support:");
   console.log(`256 colors: ${process.stdout.hasColors(256)}`);
   console.log(`16M colors: ${process.stdout.hasColors(16777216)}`);
-  
+
   // Size test
-  console.log('\n📐 Terminal Dimensions:');
+  console.log("\n📐 Terminal Dimensions:");
   console.log(`Columns: ${process.stdout.columns}`);
   console.log(`Rows: ${process.stdout.rows}`);
-  
+
   // Try a simple test image
   try {
-    console.log('\n🖼️  Testing Image Display...');
+    console.log("\n🖼️  Testing Image Display...");
     // You would need a test image file for this
     // await pixelPop.file('./test-image.png', { width: '20%' });
-    console.log('✅ Image display test would run here');
+    console.log("✅ Image display test would run here");
   } catch (error) {
-    console.log('❌ Image display failed:', error.message);
+    console.log("❌ Image display failed:", error.message);
   }
 }
 
@@ -486,7 +507,7 @@ testTerminalCapabilities();
 ### Do's ✅
 
 1. **Test across different terminals** during development
-2. **Use adaptive sizing** based on terminal capabilities  
+2. **Use adaptive sizing** based on terminal capabilities
 3. **Provide fallbacks** for older terminals
 4. **Optimize frame rates** by terminal type
 5. **Consider user's terminal preferences**
@@ -501,5 +522,5 @@ testTerminalCapabilities();
 
 ---
 
-*Made with ❤️ by Pink Pixel*  
-*"Dream it, Pixel it" ✨*
+_Made with ❤️ by Pink Pixel_  
+_"Dream it, Pixel it" ✨_

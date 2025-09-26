@@ -1,4 +1,4 @@
-declare module 'term-img' {
+declare module "term-img" {
   export type TermDimensionValue = number | `${number}%`;
 
   export interface TermImgOptions {
@@ -9,12 +9,12 @@ declare module 'term-img' {
   }
 
   export default function termImg(
-    buffer: Readonly<Uint8Array>,
-    options?: TermImgOptions
+    _buffer: Readonly<Uint8Array>,
+    _options?: TermImgOptions,
   ): string | false;
 }
 
-declare module 'render-gif' {
+declare module "render-gif" {
   export type RenderGifDimensionValue = number | `${number}%`;
 
   export interface RenderGifOptions {
@@ -29,8 +29,8 @@ declare module 'render-gif' {
   }
 
   export default function renderGif(
-    buffer: Readonly<Uint8Array>,
-    onFrame: (frameData: Readonly<Uint8Array>) => void | Promise<void>,
-    options?: RenderGifOptions
+    _buffer: Readonly<Uint8Array>,
+    _onFrame: (_frameData: Readonly<Uint8Array>) => void | Promise<void>,
+    _options?: RenderGifOptions,
   ): RenderGifAnimation;
 }

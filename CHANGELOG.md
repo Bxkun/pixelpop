@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Fixed
+
 - Documentation updated to use correct scoped package name `@pinkpixel/pixelpop` across README, OVERVIEW, and `/docs`.
 - Clarified ESM-only usage and corrected example run instructions.
 
@@ -20,24 +21,28 @@ The first stable release of Pixelpop - a sophisticated terminal utility library 
 ### ✨ Features Added
 
 #### 🖼️ Image Display
+
 - **Multi-format support**: Display JPEG, PNG, GIF, and other common image formats
 - **Buffer and file input**: Support for both file paths and in-memory buffers
 - **Intelligent terminal detection**: Automatically detects and adapts to terminal capabilities
 - **Multiple rendering strategies**: Native terminal support, Kitty protocol, and ANSI fallback
 
 #### 🎬 GIF Animation
+
 - **Smooth GIF playback**: FFmpeg-based frame extraction and controlled animation
 - **Frame rate control**: Configurable maximum frame rate limiting
 - **Animation lifecycle**: Start/stop functionality with automatic cleanup
 - **Custom rendering**: Support for custom frame rendering functions
 
 #### 📐 Dimension Management
+
 - **Flexible sizing**: Support for pixel dimensions and percentage-based sizing
 - **Aspect ratio preservation**: Intelligent scaling to maintain image proportions
 - **Terminal adaptation**: Automatic sizing based on terminal dimensions
 - **Overflow prevention**: Smart constraints to prevent terminal overflow
 
 #### 🎯 Terminal Compatibility
+
 - **iTerm2**: Native image protocol support for highest quality
 - **Kitty Protocol**: Direct rendering for Kitty, WezTerm, and Konsole terminals
 - **VS Code Terminal**: Optimized ANSI rendering for integrated development environments
@@ -47,6 +52,7 @@ The first stable release of Pixelpop - a sophisticated terminal utility library 
 - **Smart detection**: Automatic terminal detection via environment variables
 
 #### 🔧 Developer Experience
+
 - **TypeScript first**: Full TypeScript implementation with comprehensive type definitions
 - **ES Module**: Modern ES module architecture with Node.js 20+ support
 - **Simple API**: Four main methods covering all use cases
@@ -58,6 +64,7 @@ The first stable release of Pixelpop - a sophisticated terminal utility library 
 ### 🏗️ Technical Implementation
 
 #### Dependencies
+
 - **Runtime Dependencies**:
   - `chalk ^5.6.2`: Terminal color and styling support
   - `ffmpeg-static ^5.2.0`: Bundled FFmpeg binary for GIF processing
@@ -68,18 +75,21 @@ The first stable release of Pixelpop - a sophisticated terminal utility library 
   - `term-img ^7.0.0`: Native terminal image support
 
 #### Build System
+
 - **TypeScript 5.9.2**: Strict mode compilation with ES2022 target
 - **ESLint 9.36.0**: Code linting with TypeScript integration
 - **Prettier 3.6.2**: Consistent code formatting
 - **Node16 module resolution**: Modern module system support
 
 #### API Surface
+
 - `pixelPop.file(filePath, options?)`: Display image from file path
 - `pixelPop.buffer(buffer, options?)`: Display image from buffer
 - `pixelPop.gifFile(filePath, options?)`: Animate GIF from file path
 - `pixelPop.gifBuffer(buffer, options?)`: Animate GIF from buffer
 
 ### 📚 Documentation
+
 - **Comprehensive README**: Installation, usage, and quick start guide
 - **API Reference**: Complete method documentation with TypeScript definitions
 - **Getting Started Guide**: Step-by-step tutorial for new users
@@ -89,11 +99,13 @@ The first stable release of Pixelpop - a sophisticated terminal utility library 
 - **Centered branding**: Logo, badges, and demo GIFs in README
 
 ### 🎨 Branding
+
 - Pink Pixel signature styling and theming
 - Apache 2.0 license for open source compatibility
 - Professional project structure and documentation
 
 ### 🔍 Quality Assurance
+
 - TypeScript strict mode for type safety
 - ESLint configuration for code quality
 - Proper error handling and cleanup
@@ -108,5 +120,5 @@ Future versions will include additional features, performance improvements, and 
 
 ---
 
-*Made with ❤️ by Pink Pixel*  
-*"Dream it, Pixel it" ✨*
+_Made with ❤️ by Pink Pixel_  
+_"Dream it, Pixel it" ✨_

@@ -37,7 +37,7 @@ Pixelpop is a sophisticated terminal utility library that brings visual content 
 # Using npm
 npm install @pinkpixel/pixelpop
 
-# Using yarn  
+# Using yarn
 yarn add @pinkpixel/pixelpop
 
 # Using pnpm
@@ -49,18 +49,18 @@ Note: `@pinkpixel/pixelpop` is ESM-only (`"type": "module"`). Use ESM in your pr
 ### Basic Usage
 
 ```typescript
-import pixelPop from '@pinkpixel/pixelpop';
+import pixelPop from "@pinkpixel/pixelpop";
 
 // Display a static image
-const output = await pixelPop.file('./my-image.jpg', {
-  width: '50%'
+const output = await pixelPop.file("./my-image.jpg", {
+  width: "50%",
 });
 console.log(output);
 
 // Play an animated GIF
-const stop = await pixelPop.gifFile('./my-animation.gif', {
-  width: '80%',
-  maximumFrameRate: 24
+const stop = await pixelPop.gifFile("./my-animation.gif", {
+  width: "80%",
+  maximumFrameRate: 24,
 });
 
 // Stop the animation after 5 seconds
@@ -72,66 +72,73 @@ setTimeout(stop, 5000);
 ### Static Image Methods
 
 #### `pixelPop.file(filePath, options?)`
+
 Display an image from a file path.
 
 ```typescript
-await pixelPop.file('./image.jpg', {
-  width: '60%',
+await pixelPop.file("./image.jpg", {
+  width: "60%",
   height: 20,
-  preserveAspectRatio: true
+  preserveAspectRatio: true,
 });
 ```
 
 #### `pixelPop.buffer(buffer, options?)`
+
 Display an image from a buffer.
 
 ```typescript
-const imageBuffer = fs.readFileSync('./image.jpg');
-await pixelPop.buffer(imageBuffer, { width: '50%' });
+const imageBuffer = fs.readFileSync("./image.jpg");
+await pixelPop.buffer(imageBuffer, { width: "50%" });
 ```
 
 ### Animated GIF Methods
 
 #### `pixelPop.gifFile(filePath, options?)`
+
 Play an animated GIF from a file path. Returns a function to stop the animation.
 
 ```typescript
-const stop = await pixelPop.gifFile('./animation.gif', {
-  width: '75%',
-  maximumFrameRate: 30
+const stop = await pixelPop.gifFile("./animation.gif", {
+  width: "75%",
+  maximumFrameRate: 30,
 });
 ```
 
 #### `pixelPop.gifBuffer(buffer, options?)`
+
 Play an animated GIF from a buffer. Returns a function to stop the animation.
 
 ```typescript
-const gifBuffer = fs.readFileSync('./animation.gif');
+const gifBuffer = fs.readFileSync("./animation.gif");
 const stop = await pixelPop.gifBuffer(gifBuffer, {
-  maximumFrameRate: 15
+  maximumFrameRate: 15,
 });
 ```
 
 ### Options
 
 #### `RenderOptions`
+
 ```typescript
 interface RenderOptions {
-  width?: DimensionValue;        // number or percentage string like '50%'
-  height?: DimensionValue;       // number or percentage string like '50%'  
+  width?: DimensionValue; // number or percentage string like '50%'
+  height?: DimensionValue; // number or percentage string like '50%'
   preserveAspectRatio?: boolean; // default: true
 }
 ```
 
 #### `GifOptions`
+
 ```typescript
 interface GifOptions extends RenderOptions {
-  maximumFrameRate?: number;  // default: 30
-  renderFrame?: RenderFrame;  // custom frame renderer
+  maximumFrameRate?: number; // default: 30
+  renderFrame?: RenderFrame; // custom frame renderer
 }
 ```
 
 #### `DimensionValue`
+
 ```typescript
 type DimensionValue = number | `${number}%`;
 ```
@@ -139,23 +146,25 @@ type DimensionValue = number | `${number}%`;
 ## 🎯 Examples
 
 ### Responsive Image Display
+
 ```typescript
-import pixelPop from '@pinkpixel/pixelpop';
+import pixelPop from "@pinkpixel/pixelpop";
 
 // Adapt to terminal size
-await pixelPop.file('./hero-image.jpg', {
-  width: '100%',
-  preserveAspectRatio: true
+await pixelPop.file("./hero-image.jpg", {
+  width: "100%",
+  preserveAspectRatio: true,
 });
 ```
 
 ### Controlled GIF Animation
-```typescript
-import pixelPop from '@pinkpixel/pixelpop';
 
-const stop = await pixelPop.gifFile('./loading.gif', {
-  width: '25%',
-  maximumFrameRate: 20
+```typescript
+import pixelPop from "@pinkpixel/pixelpop";
+
+const stop = await pixelPop.gifFile("./loading.gif", {
+  width: "25%",
+  maximumFrameRate: 20,
 });
 
 // Stop after process completes
@@ -164,9 +173,10 @@ stop();
 ```
 
 ### Custom Frame Rendering
+
 ```typescript
-import pixelPop from '@pinkpixel/pixelpop';
-import logUpdate from 'log-update';
+import pixelPop from "@pinkpixel/pixelpop";
+import logUpdate from "log-update";
 
 const customRenderer = (frame: string) => {
   logUpdate(`\n🎬 Animation Frame:\n${frame}`);
@@ -174,24 +184,25 @@ const customRenderer = (frame: string) => {
 
 customRenderer.done = () => {
   logUpdate.done();
-  console.log('Animation complete!');
+  console.log("Animation complete!");
 };
 
-await pixelPop.gifFile('./demo.gif', {
+await pixelPop.gifFile("./demo.gif", {
   renderFrame: customRenderer,
-  maximumFrameRate: 24
+  maximumFrameRate: 24,
 });
 ```
 
 ### Buffer Processing
-```typescript
-import pixelPop from '@pinkpixel/pixelpop';
-import { promises as fs } from 'fs';
 
-const imageBuffer = await fs.readFile('./screenshot.png');
+```typescript
+import pixelPop from "@pinkpixel/pixelpop";
+import { promises as fs } from "fs";
+
+const imageBuffer = await fs.readFile("./screenshot.png");
 const output = await pixelPop.buffer(imageBuffer, {
   width: 80,
-  height: '50%'
+  height: "50%",
 });
 
 console.log(output);
@@ -202,7 +213,9 @@ console.log(output);
 Pixelpop uses a sophisticated multi-strategy rendering approach:
 
 ### 1. **Terminal Detection**
+
 Automatically detects your terminal's capabilities by checking environment variables:
+
 - `TERM_PROGRAM` (iTerm2, WezTerm, etc.)
 - `TERM` (xterm-kitty, etc.)
 - `KITTY_WINDOW_ID` and `KONSOLE_VERSION`
@@ -210,39 +223,45 @@ Automatically detects your terminal's capabilities by checking environment varia
 ### 2. **Rendering Strategies**
 
 #### 🏆 **Native Support** (iTerm2, etc.)
+
 Uses `term-img` for terminals with built-in image protocols.
 
 #### ⚡ **Kitty Protocol** (Kitty, WezTerm, Konsole)
+
 Direct image rendering using Kitty's graphics protocol for superior quality.
 
 #### 🌈 **ANSI Fallback** (Universal)
+
 Block character rendering with RGB colors using Chalk - works everywhere!
 
 ### 3. **GIF Processing**
+
 - FFmpeg-based frame extraction to temporary files
 - Controlled animation loop with configurable frame rates
 - Automatic cleanup of temporary resources
 
 ## 🎨 Terminal Compatibility
 
-| Terminal | Strategy | Quality |
-|----------|----------|---------|
-| iTerm2 | Native | ⭐⭐⭐⭐⭐ |
-| Kitty | Kitty Protocol | ⭐⭐⭐⭐⭐ |
-| WezTerm | Kitty Protocol | ⭐⭐⭐⭐⭐ |
-| Warp | ANSI Fallback | ⭐⭐⭐⭐ |
-| Konsole | Kitty Protocol | ⭐⭐⭐⭐ |
-| Terminal.app | ANSI Fallback | ⭐⭐⭐ |
-| Windows Terminal | ANSI Fallback | ⭐⭐⭐ |
-| Standard xterm | ANSI Fallback | ⭐⭐⭐ |
+| Terminal         | Strategy       | Quality    |
+| ---------------- | -------------- | ---------- |
+| iTerm2           | Native         | ⭐⭐⭐⭐⭐ |
+| Kitty            | Kitty Protocol | ⭐⭐⭐⭐⭐ |
+| WezTerm          | Kitty Protocol | ⭐⭐⭐⭐⭐ |
+| Warp             | ANSI Fallback  | ⭐⭐⭐⭐   |
+| Konsole          | Kitty Protocol | ⭐⭐⭐⭐   |
+| Terminal.app     | ANSI Fallback  | ⭐⭐⭐     |
+| Windows Terminal | ANSI Fallback  | ⭐⭐⭐     |
+| Standard xterm   | ANSI Fallback  | ⭐⭐⭐     |
 
 ## 🛠️ Development
 
 ### Prerequisites
+
 - Node.js >= 20
 - npm, yarn, or pnpm
 
 ### Setup
+
 ```bash
 git clone https://github.com/pinkpixel-dev/pixelpop.git
 cd pixelpop
@@ -250,6 +269,7 @@ npm install
 ```
 
 ### Build
+
 ```bash
 npm run build     # Compile TypeScript
 npm run clean     # Clean dist directory
@@ -257,6 +277,7 @@ npm run prepare   # Full build (runs automatically on install)
 ```
 
 ### Code Quality
+
 ```bash
 npm run lint      # Run ESLint
 npm run lint:fix  # Fix ESLint issues
@@ -264,6 +285,7 @@ npm run typecheck # TypeScript validation
 ```
 
 ### Examples
+
 Examples in `examples/` are TypeScript. Run them with a TS runner like `tsx` or `ts-node`, or copy snippets into your own app:
 
 ```bash
@@ -295,7 +317,7 @@ Pixelpop includes comprehensive documentation with detailed guides, examples, an
 await pixelPop.file(filePath, options?)     // Display image from file
 await pixelPop.buffer(buffer, options?)     // Display image from buffer
 
-// Animated GIFs  
+// Animated GIFs
 const stop = await pixelPop.gifFile(filePath, options?)   // Play GIF from file
 const stop = await pixelPop.gifBuffer(buffer, options?)   // Play GIF from buffer
 
@@ -311,6 +333,7 @@ const stop = await pixelPop.gifBuffer(buffer, options?)   // Play GIF from buffe
 We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
 
 ### Development Workflow
+
 1. Fork the repository
 2. Create a feature branch: `git checkout -b feature/amazing-feature`
 3. Make your changes and add tests

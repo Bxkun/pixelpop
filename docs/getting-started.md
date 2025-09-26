@@ -30,14 +30,15 @@ pnpm add @pinkpixel/pixelpop
 Let's start with the simplest possible example:
 
 ```typescript
-import pixelPop from '@pinkpixel/pixelpop';
+import pixelPop from "@pinkpixel/pixelpop";
 
 // Display an image file
-const output = await pixelPop.file('./my-image.jpg');
+const output = await pixelPop.file("./my-image.jpg");
 console.log(output);
 ```
 
 That's it! Pixelpop will automatically:
+
 - Detect your terminal's capabilities
 - Choose the best rendering method
 - Size the image to fit your terminal
@@ -67,9 +68,9 @@ Pixelpop automatically detects your terminal by checking environment variables:
 
 ```typescript
 // These are checked automatically - no configuration needed!
-process.env.TERM_PROGRAM    // 'iTerm.app', 'WezTerm', etc.
-process.env.TERM           // 'xterm-kitty', etc.
-process.env.KITTY_WINDOW_ID // Present in Kitty terminal
+process.env.TERM_PROGRAM; // 'iTerm.app', 'WezTerm', etc.
+process.env.TERM; // 'xterm-kitty', etc.
+process.env.KITTY_WINDOW_ID; // Present in Kitty terminal
 ```
 
 ## 📐 Size Control
@@ -80,15 +81,15 @@ Perfect for responsive terminal applications:
 
 ```typescript
 // Fill 80% of terminal width
-await pixelPop.file('./image.jpg', { width: '80%' });
+await pixelPop.file("./image.jpg", { width: "80%" });
 
 // Fill 50% of terminal height
-await pixelPop.file('./image.jpg', { height: '50%' });
+await pixelPop.file("./image.jpg", { height: "50%" });
 
 // Both dimensions
-await pixelPop.file('./image.jpg', {
-  width: '80%',
-  height: '60%'
+await pixelPop.file("./image.jpg", {
+  width: "80%",
+  height: "60%",
 });
 ```
 
@@ -98,9 +99,9 @@ For precise control:
 
 ```typescript
 // Exact pixel dimensions
-await pixelPop.file('./image.jpg', {
+await pixelPop.file("./image.jpg", {
   width: 120,
-  height: 80
+  height: 80,
 });
 ```
 
@@ -108,16 +109,16 @@ await pixelPop.file('./image.jpg', {
 
 ```typescript
 // Maintain original proportions (default)
-await pixelPop.file('./image.jpg', {
-  width: '80%',
-  preserveAspectRatio: true  // default
+await pixelPop.file("./image.jpg", {
+  width: "80%",
+  preserveAspectRatio: true, // default
 });
 
 // Stretch to fit exact dimensions
-await pixelPop.file('./image.jpg', {
+await pixelPop.file("./image.jpg", {
   width: 100,
   height: 100,
-  preserveAspectRatio: false
+  preserveAspectRatio: false,
 });
 ```
 
@@ -127,8 +128,8 @@ Animated GIFs are just as easy:
 
 ```typescript
 // Start animation
-const stop = await pixelPop.gifFile('./animation.gif', {
-  width: '60%'
+const stop = await pixelPop.gifFile("./animation.gif", {
+  width: "60%",
 });
 
 // Stop after 5 seconds
@@ -141,18 +142,18 @@ Control animation smoothness and performance:
 
 ```typescript
 // High-quality smooth animation
-const stop = await pixelPop.gifFile('./smooth-animation.gif', {
-  maximumFrameRate: 30  // Balanced quality and performance
+const stop = await pixelPop.gifFile("./smooth-animation.gif", {
+  maximumFrameRate: 30, // Balanced quality and performance
 });
 
 // Battery-friendly animation
-const stopSlow = await pixelPop.gifFile('./efficient-animation.gif', {
-  maximumFrameRate: 15  // Lower CPU usage
+const stopSlow = await pixelPop.gifFile("./efficient-animation.gif", {
+  maximumFrameRate: 15, // Lower CPU usage
 });
 
 // Ultra-smooth for high-end terminals
-const stopUltra = await pixelPop.gifFile('./premium-animation.gif', {
-  maximumFrameRate: 60  // Maximum smoothness (iTerm2, Kitty)
+const stopUltra = await pixelPop.gifFile("./premium-animation.gif", {
+  maximumFrameRate: 60, // Maximum smoothness (iTerm2, Kitty)
 });
 ```
 
@@ -161,20 +162,20 @@ const stopUltra = await pixelPop.gifFile('./premium-animation.gif', {
 Sometimes you have image data in memory instead of files:
 
 ```typescript
-import { readFile } from 'fs/promises';
+import { readFile } from "fs/promises";
 
 // Read image into buffer
-const imageBuffer = await readFile('./photo.jpg');
+const imageBuffer = await readFile("./photo.jpg");
 
 // Display the buffer
 await pixelPop.buffer(imageBuffer, {
-  width: '50%'
+  width: "50%",
 });
 
 // Same for GIFs
-const gifBuffer = await readFile('./animation.gif');
+const gifBuffer = await readFile("./animation.gif");
 const stop = await pixelPop.gifBuffer(gifBuffer, {
-  maximumFrameRate: 24
+  maximumFrameRate: 24,
 });
 ```
 
@@ -186,22 +187,22 @@ Perfect for command-line utilities:
 
 ```typescript
 #!/usr/bin/env node
-import pixelPop from '@pinkpixel/pixelpop';
+import pixelPop from "@pinkpixel/pixelpop";
 
-const [,, imagePath] = process.argv;
+const [, , imagePath] = process.argv;
 
 if (!imagePath) {
-  console.error('Usage: my-tool <image-path>');
+  console.error("Usage: my-tool <image-path>");
   process.exit(1);
 }
 
 try {
   await pixelPop.file(imagePath, {
-    width: '80%',
-    preserveAspectRatio: true
+    width: "80%",
+    preserveAspectRatio: true,
   });
 } catch (error) {
-  console.error('Failed to display image:', error.message);
+  console.error("Failed to display image:", error.message);
   process.exit(1);
 }
 ```
@@ -212,8 +213,8 @@ Use GIFs for loading animations:
 
 ```typescript
 // Start loading animation
-const stopLoading = await pixelPop.gifFile('./spinner.gif', {
-  width: '10%'
+const stopLoading = await pixelPop.gifFile("./spinner.gif", {
+  width: "10%",
 });
 
 // Do some work
@@ -221,7 +222,7 @@ await performLongOperation();
 
 // Stop the loading animation
 stopLoading();
-console.log('✅ Operation complete!');
+console.log("✅ Operation complete!");
 ```
 
 ### Image Gallery
@@ -229,16 +230,16 @@ console.log('✅ Operation complete!');
 Display multiple images in sequence:
 
 ```typescript
-const images = ['./photo1.jpg', './photo2.jpg', './photo3.jpg'];
+const images = ["./photo1.jpg", "./photo2.jpg", "./photo3.jpg"];
 
 for (const imagePath of images) {
   console.log(`\n📷 Showing: ${imagePath}`);
-  await pixelPop.file(imagePath, { width: '80%' });
-  
+  await pixelPop.file(imagePath, { width: "80%" });
+
   // Wait for user input
-  await new Promise(resolve => {
-    process.stdin.once('data', resolve);
-    console.log('Press any key for next image...');
+  await new Promise((resolve) => {
+    process.stdin.once("data", resolve);
+    console.log("Press any key for next image...");
   });
 }
 ```
@@ -246,28 +247,33 @@ for (const imagePath of images) {
 ## 🎯 Terminal-Specific Tips
 
 ### iTerm2 Users (macOS)
+
 - ✨ **Best image quality** with native rendering
 - 🖼️ **Supports largest images** without performance issues
 - ⚙️ **No setup required** - works out of the box
 - 🎬 **Excellent GIF support** with high frame rates
 
 ### Kitty/WezTerm/Konsole Users
+
 - ⚡ **Excellent quality** with Kitty graphics protocol
 - 🚀 **Fast rendering performance** across platforms
 - 🌈 **Great transparency support** for PNG images
 - 💻 **Cross-platform consistency**
 
 ### VS Code Terminal Users
+
 - 💻 **Optimized ANSI rendering** for integrated terminal
 - 🔧 **Special handling** for transparency and colors
 - 📄 **Works well** with development workflows
 
 ### Windows Terminal Users
+
 - 💻 **Modern Windows support** with good color reproduction
 - ⚙️ **Optimized character rendering** for Windows fonts
 - 🌈 **Decent color support** in ANSI mode
 
 ### Standard Terminal Users
+
 - 🌈 **Universal ANSI fallback** works everywhere
 - 📉 **Smaller images recommended** for better readability
 - ⚡ **Lower frame rates** reduce terminal flicker
@@ -279,14 +285,14 @@ Always handle errors gracefully:
 ```typescript
 async function displayImageSafely(path: string) {
   try {
-    await pixelPop.file(path, { width: '80%' });
+    await pixelPop.file(path, { width: "80%" });
   } catch (error) {
-    if (error.code === 'ENOENT') {
+    if (error.code === "ENOENT") {
       console.error(`❌ Image not found: ${path}`);
-    } else if (error.message.includes('too small')) {
-      console.error('❌ Image is too small to render');
+    } else if (error.message.includes("too small")) {
+      console.error("❌ Image is too small to render");
     } else {
-      console.error('❌ Failed to display image:', error.message);
+      console.error("❌ Failed to display image:", error.message);
     }
   }
 }
@@ -297,7 +303,7 @@ async function displayImageSafely(path: string) {
 For advanced GIF control:
 
 ```typescript
-import logUpdate from 'log-update';
+import logUpdate from "log-update";
 
 const customRenderer = (frame: string) => {
   // Custom frame display logic
@@ -306,12 +312,12 @@ const customRenderer = (frame: string) => {
 
 customRenderer.done = () => {
   logUpdate.done();
-  console.log('🎉 Animation finished!');
+  console.log("🎉 Animation finished!");
 };
 
-await pixelPop.gifFile('./animation.gif', {
+await pixelPop.gifFile("./animation.gif", {
   renderFrame: customRenderer,
-  maximumFrameRate: 20
+  maximumFrameRate: 20,
 });
 ```
 
@@ -326,13 +332,13 @@ await pixelPop.gifFile('./animation.gif', {
 
 ```typescript
 // Good: Reasonable frame rate
-await pixelPop.gifFile('./animation.gif', {
-  maximumFrameRate: 24  // Smooth but not excessive
+await pixelPop.gifFile("./animation.gif", {
+  maximumFrameRate: 24, // Smooth but not excessive
 });
 
 // Less optimal: Very high frame rate
-await pixelPop.gifFile('./animation.gif', {
-  maximumFrameRate: 120  // May be overkill and CPU-intensive
+await pixelPop.gifFile("./animation.gif", {
+  maximumFrameRate: 120, // May be overkill and CPU-intensive
 });
 ```
 
@@ -343,9 +349,9 @@ await pixelPop.gifFile('./animation.gif', {
 Not sure what rendering method is being used? Check your environment:
 
 ```typescript
-console.log('Terminal:', process.env.TERM_PROGRAM);
-console.log('Term type:', process.env.TERM);
-console.log('Kitty window:', process.env.KITTY_WINDOW_ID ? 'Yes' : 'No');
+console.log("Terminal:", process.env.TERM_PROGRAM);
+console.log("Term type:", process.env.TERM);
+console.log("Kitty window:", process.env.KITTY_WINDOW_ID ? "Yes" : "No");
 ```
 
 ### Enable Debug Mode
@@ -354,13 +360,13 @@ For troubleshooting, you can add logging:
 
 ```typescript
 try {
-  console.log('Attempting to display image...');
-  const output = await pixelPop.file('./test.jpg', {
-    width: '50%'
+  console.log("Attempting to display image...");
+  const output = await pixelPop.file("./test.jpg", {
+    width: "50%",
   });
-  console.log('Success! Output length:', output.length);
+  console.log("Success! Output length:", output.length);
 } catch (error) {
-  console.error('Display failed:', error);
+  console.error("Display failed:", error);
 }
 ```
 
@@ -377,13 +383,13 @@ Now that you're comfortable with the basics:
 
 ```typescript
 // Static images
-await pixelPop.file('./image.jpg', { width: '80%' });
+await pixelPop.file("./image.jpg", { width: "80%" });
 await pixelPop.buffer(imageBuffer, { height: 40 });
 
 // Animated GIFs
-const stop = await pixelPop.gifFile('./anim.gif', { 
-  width: '50%', 
-  maximumFrameRate: 30 
+const stop = await pixelPop.gifFile("./anim.gif", {
+  width: "50%",
+  maximumFrameRate: 30,
 });
 
 // Clean up
@@ -394,5 +400,5 @@ Happy coding! 🎉
 
 ---
 
-*Made with ❤️ by Pink Pixel*  
-*"Dream it, Pixel it" ✨*
+_Made with ❤️ by Pink Pixel_  
+_"Dream it, Pixel it" ✨_

@@ -1,33 +1,36 @@
-import { eslint } from '@eslint/js';
-import { promises } from 'dns';
-import { defineConfig } from 'eslint/config';
-import globals from 'globals';
-import tseslint, { parser } from 'typescript-eslint';
+import js from "@eslint/js";
+import globals from "globals";
+import tseslint from "typescript-eslint";
 
-export default defineConfig(
+export default [
   {
-    ignores: ['dist', 'node_modules']
+    ignores: ["dist", "node_modules"],
   },
-  eslint.configs.recommended,
+  js.configs.recommended,
   {
+    files: ["**/*.ts", "**/*.tsx"],
     plugins: {
-      '@typescript-eslint': tseslint.plugin,
+      "@typescript-eslint": tseslint.plugin,
     },
     languageOptions: {
       parser: tseslint.parser,
       parserOptions: {
-        ecmaVersion: 'latest',
-        projectService: true,
-        sourceType: 'module'
+        ecmaVersion: "latest",
+        project: "./tsconfig.eslint.json",
+        sourceType: "module",
       },
       globals: {
-        ...globals.node
-      }
+        ...globals.node,
+      },
     },
     rules: {
-      '@typescript-eslint/no-floating-promises': 'error',
-      '@typescript-eslint/no-unused-vars': ['error', {argsIgnorePattern: '^_'}],
-      '@typescript-eslint/explicit-module-boundary-types': 'off'
-    }
-  }
-);
+      "no-unused-vars": "off", // Disable base rule
+      "@typescript-eslint/no-floating-promises": "error",
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
+      ],
+      "@typescript-eslint/explicit-module-boundary-types": "off",
+    },
+  },
+];
